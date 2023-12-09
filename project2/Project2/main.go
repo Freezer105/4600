@@ -9,7 +9,7 @@ import (
 	"os/user"
 	"strings"
 
-	"github.com/jh125486/CSCE4600/Project2/builtins"
+	"github.com/Freezer105/4600/Project2/builtins"
 )
 
 func main() {
@@ -72,15 +72,21 @@ func handleInput(w io.Writer, input string, exit chan<- struct{}) error {
 	name, args := args[0], args[1:]
 
 	// Check for built-in commands.
-	// New builtin commands should be added here. Eventually this should be refactored to its own func.
 	switch name {
 	case "cd":
 		return builtins.ChangeDirectory(args...)
 	case "env":
 		return builtins.EnvironmentVariables(w, args...)
+	case "bash":
+		return builtins.BashBuiltin(w, args...)
+	case "sh":
+		return builtins.ShBuiltin(w, args...)
+	case "csh":
+		return builtins.CshBuiltin(w, args...)
 	case "exit":
 		exit <- struct{}{}
 		return nil
+
 	}
 
 	return executeCommand(name, args...)
